@@ -36,7 +36,8 @@ const userSchema: Schema<IUser> = new Schema({
   },
   verifyTokenExpiry: {
     type: Date,
-    required: true
+    required: true,
+    default: Date.now()
   },
   isAcceptingMessage:{
     type: Boolean,
@@ -56,7 +57,7 @@ userSchema.pre("save", async function(next){
   next();
 })
 
-const User = models?.users as mongoose.Model<IUser> || model<IUser>("users", userSchema);
+const User = models.User as mongoose.Model<IUser> || model<IUser>("User", userSchema);
 
 export default User;
 
