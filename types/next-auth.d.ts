@@ -1,9 +1,32 @@
 import { DefaultSession } from "next-auth";
 
 declare module "next-auth" {
+  interface User {
+    _id?: string;
+    isVerified?: boolean;
+    isAcceptingMessage?: boolean;
+    username?: string;
+  }
+
   interface Session {
     user: {
-      id: string;
-    } & DefaultSession["user"];
+      _id?: string;
+      isVerified?: boolean;
+      isAcceptingMessage?: boolean;
+      username?: string;
+    } & DefaultSession['user']
+
+  }
+
+}
+
+// another way of modifying types in next-auth
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    _id?: string;
+    isVerified?: boolean;
+    isAcceptingMessage?: boolean;
+    username?: string;
   }
 }
