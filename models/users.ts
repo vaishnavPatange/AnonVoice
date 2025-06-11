@@ -45,7 +45,7 @@ const userSchema: Schema<IUser> = new Schema({
     default: true
   },
   messages:[{
-    type: Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: "Message"
   }]
 });
