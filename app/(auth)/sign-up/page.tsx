@@ -1,6 +1,6 @@
 "use client"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { SubmitHandler, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { z } from "zod"
 import Link from "next/link"
 import { useEffect, useState } from "react"
@@ -34,20 +34,22 @@ const LoginPage = () => {
 
     useEffect(() => {
         const checkUsername = async () => {
-            if (username) {
-                setIsCheckingUsername(true);
-                // setUsernameMessage('')
+            if (!username) {
+                setUsernameMessage('')
+                return;
             }
+            setIsCheckingUsername(true)
             try {
                 const response = await axios.get(`/api/user/check-username-unique/?username=${username}`);
-                if(response.data.success){
-                    setUsernameMessage(response.data.message)
+                setUsernameMessage(response.data.message)
+            } catch (error: any) {
+                if (axios.isAxiosError(error)) {
+                    setUsernameMessage(error.response?.data?.message || "Error checking username");
+                } else {
+                    setUsernameMessage("Unexpected error");
                 }
-            } catch (error) {
-                setUsernameMessage("Error checking username");
             } finally {
                 setIsCheckingUsername(false);
-                setUsernameMessage('')
             }
         }
         checkUsername();
@@ -60,7 +62,8 @@ const LoginPage = () => {
             const response = await axios.post("/api/user/signup", data);
             if (response.data.success) {
                 toast.success(response.data.message);
-                router.replace("/verify-code");
+                setTimeout(() => {router.replace("/sign-in");}, 2000)
+
             } else {
                 toast.error(response.data.message);
             }
@@ -91,7 +94,7 @@ const LoginPage = () => {
                             control={form.control}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Username</FormLabel>
+                                    <FormLabel>Username {isCheckingUsername && <Loader2 className="animate-spin" />}</FormLabel>
                                     <FormControl>
                                         <Input placeholder="username"
                                             {...field}
@@ -101,11 +104,8 @@ const LoginPage = () => {
                                             }}
                                         />
                                     </FormControl>
-                                    {
-                                        isCheckingUsername && <Loader2 className="animate-spin"/>
-                                    }
                                     <p className={`${usernameMessage === "Username is available" ? "text-green-500" : "text-red-500"}`}>
-                                        test {usernameMessage.toString()}
+                                         {usernameMessage.toString()}
                                     </p>
                                     <FormMessage />
                                 </FormItem>
@@ -145,7 +145,7 @@ const LoginPage = () => {
                         <Button type="submit" className='w-full' disabled={isSubmitting}>
                             {
                                 isSubmitting ? (
-                                    <Loader2 className="mmr-2 h-4 w-4 animate-spin"/>
+                                    <Loader2 className="mmr-2 h-4 w-4 animate-spin" />
                                 ) : "Signup"
                             }
                         </Button>

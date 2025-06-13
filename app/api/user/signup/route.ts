@@ -41,18 +41,18 @@ export async function POST(request: NextRequest) {
         }
 
         // send verification email
-        const emailResponse = await sendEmail(email, username, verifyCode)
+        // const emailResponse = await sendEmail(email, username, verifyCode)
         
-        if(!emailResponse.ok){
-            return NextResponse.json({
-                message: "User verification failed",
-                success: false
-            }, {status: 500})
-        }
+        // if(!emailResponse.ok){
+        //     return NextResponse.json({
+        //         message: "User verification failed",
+        //         success: false
+        //     }, {status: 500})
+        // }
 
         return NextResponse.json({
             success: true,
-            message: "User registration successfull. Please verify you email"
+            message: "User registration successfull!. you will be automatically redirected to login page"
         }, {status: 201})
 
     } catch (error: any) {

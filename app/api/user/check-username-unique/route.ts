@@ -17,11 +17,10 @@ export async function GET(request: NextRequest) {
 
         const result = usernameQuerySchema.safeParse(queryParam);
         if (!result.success) {
-
             return NextResponse.json({
-                message: "Invalid username",
+                message: "Invalid username, username must be between 2-10 characters",
                 success: false
-            }, { status: 400 })
+            })
         }
 
         await connectDB();
@@ -33,7 +32,7 @@ export async function GET(request: NextRequest) {
             return NextResponse.json({
                 message: "Username already taken",
                 success: false
-            },{ status: 400 })
+            })
         }
 
         return NextResponse.json({

@@ -10,7 +10,7 @@ export async function sendEmail(email: string,
 
   try {
     const { data, error } = await resend.emails.send({
-      from: 'AnonVoice <onboarding@resend.dev>',
+      from: 'AnonVoice <patangevaishnav5@gmail.com>',
       to: email,
       subject: 'Verify your email',
       react: await EmailTemplate({username, type:"VERIFY", verifyCode}),
