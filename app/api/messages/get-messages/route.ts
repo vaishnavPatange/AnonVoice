@@ -4,7 +4,7 @@ import { connectDB } from "@/lib/dbConfig";
 import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
 import { getServerSession, User as UserType } from "next-auth";
-import { authOptions } from "../../user/auth/[...nextauth]/options";
+import { authOptions } from "../../auth/[...nextauth]/options";
 
 
 export async function GET(request: NextRequest) {

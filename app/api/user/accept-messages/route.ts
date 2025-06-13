@@ -2,7 +2,7 @@ import { getServerSession, User as UserType } from "next-auth";
 import User from "@/models/users";
 import { connectDB } from "@/lib/dbConfig";
 import { NextRequest, NextResponse } from "next/server";
-import { authOptions } from "../auth/[...nextauth]/options";
+import { authOptions } from "../../auth/[...nextauth]/options";
 
 
 export async function POST(request: NextRequest) {
