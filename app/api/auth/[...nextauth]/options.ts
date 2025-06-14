@@ -7,21 +7,21 @@ import User from "@/models/users";
 export const authOptions: NextAuthOptions = {
     providers: [
         CredentialsProvider({
-            name: "Credentials",
+            name: "credentials",
             credentials: {
-                email: { label: "Email", type: "text", placeholder: "Enter your Email" },
+                identifier: { label: "Email", type: "text", placeholder: "Enter your Email" },
                 password: { label: "Password", type: "password", placeholder: "Enter your Password" }
             },
-
             async authorize(credentials) {
-                if (!credentials?.email || !credentials?.password) {
+                console.log(credentials)
+                if (!credentials?.identifier || !credentials?.password) {
                     throw new Error("Missing Email or Password")
                 }
 
                 try {
 
                     await connectDB();
-                    const user = await User.findOne({ email: credentials.email });
+                    const user = await User.findOne({ email: credentials.identifier });
                     if (!user) {
                         throw new Error("User does not exists");
                     }
@@ -38,7 +38,7 @@ export const authOptions: NextAuthOptions = {
 
                     return {
                         id: user._id as string,
-                        email: user.email
+                        identifier: user.email
                     }
 
                 } catch (error) {

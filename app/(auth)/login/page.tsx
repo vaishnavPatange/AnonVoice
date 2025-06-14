@@ -29,16 +29,17 @@ const LoginPage = () => {
     const onSubmit = async (data: z.infer<typeof signInSchema>) => {
         console.log(data)
         setIsSubmitting(true);
-        const result = await signIn("Credentials", {
-          redirect: false
+        const result = await signIn("credentials", {
+            identifier: data.identifier,
+            password: data.password,
+            redirect: false
         })
-        console.log(result)
         if(result?.error){
           toast.error(result.error)
         }
         setIsSubmitting(false)
         if(result?.url){
-          router.replace("/dashboard")
+          router.push("/dashboard")
         }
 
     }
