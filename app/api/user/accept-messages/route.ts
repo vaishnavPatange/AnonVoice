@@ -18,6 +18,8 @@ export async function POST(request: NextRequest) {
         }, { status: 401 })
     }
 
+    console.log(user)
+
     const userId = user?._id;
 
     try {
