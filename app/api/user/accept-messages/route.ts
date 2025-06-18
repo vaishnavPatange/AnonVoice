@@ -18,8 +18,6 @@ export async function POST(request: NextRequest) {
         }, { status: 401 })
     }
 
-    console.log(user)
-
     const userId = user?._id;
 
     try {
@@ -80,7 +78,7 @@ export async function GET(request: NextRequest) {
         }
 
         return NextResponse.json({
-            message: "Messages fetched successfully",
+            message: "Accept message status fetched",
             success: true,
             isAcceptingMessage: existedUser.isAcceptingMessage
         }, { status: 404 })

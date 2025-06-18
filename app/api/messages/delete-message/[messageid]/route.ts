@@ -2,10 +2,12 @@ import Message from "@/models/message";
 import { NextResponse, NextRequest } from "next/server";
 import User from "@/models/users";
 import { getServerSession, User as UserType } from "next-auth";
-import { authOptions } from "../../auth/[...nextauth]/options";
+import { authOptions } from "../../../auth/[...nextauth]/options";
+import { connect } from "http2";
+import { connectDB } from "@/lib/dbConfig";
 
 
-export async function DELETE(request: NextRequest) {
+export async function DELETE(request: NextRequest, {params} : {params: {messageId: string}}) {
 
     const session = await getServerSession(authOptions);
     const user: UserType = session?.user as UserType;
@@ -17,8 +19,8 @@ export async function DELETE(request: NextRequest) {
     }
 
     try {
-
-        const { messageId } = await request.json();
+        await connectDB();
+        const messageId = params.messageId;
         await Message.findByIdAndDelete(messageId);
         const updatedUser = await User.updateOne({ _id: user._id },
             { $pull: { _id: messageId } } // $pull removes matching element from array
